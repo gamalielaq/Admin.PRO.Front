@@ -1,0 +1,79 @@
+<div class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- keydown: cuando presiono una tecla -->
+                <!-- keyup: cuando suelto una tecla -->
+                <input class="form-control" #txtBuscar (keyup)="buscar( txtBuscar.value )" type="text" placeholder="Buscar Usuario">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Total de usuarios ( {{ totalUsuarios }}) </h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombres</th>
+                                <th>Correo</th>
+                                <th class="w140">Rol</th>
+                                <th class="w100">Auth</th>
+                                <th class="text-nowrap w100">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!cargando">
+                            <tr *ngFor="let usuario of usuarios">
+                                <td>
+                                    <img
+                                        class="rounded-circle cursor"
+                                        [style.width]="'30px'"
+                                        [src]="usuario.imagenUrl"
+                                        (click)="abrirModal( usuario )"
+                                        alt="Avatar de usuario">
+                                        {{ usuario.nombre }}
+                                </td>
+                                <td> {{ usuario.email }}</td>
+                                <td>
+
+                                    <select class="form-control cursor" [(ngModel)]="usuario.rol" (change)="cambiarRol( usuario )">
+                                        <option value="ADMIN_ROL">Andmin</option>
+                                        <option value="USER_ROL">User</option>
+                                    </select>
+                                    
+                                </td>
+                                <td>
+                                    <span *ngIf="usuario.google" class="label label-danger">Google</span>
+                                    <span *ngIf="!usuario.google" class="label label-info">Email</span>
+                                </td>
+                                <td class="text-nowrap text-center">
+                                    <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i
+                                            class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a class="cursor" (click)="deleteUsuario( usuario )" data-toggle="tooltip" data-original-title="Borrar"> <i
+                                            class="fa fa-close text-danger"></i> </a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="txtBuscar.value.length === 0">
+                                <td class="text-right" colspan="5">
+                                    <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anterior</button>
+                                    &nbsp;
+                                    <button class="btn btn-secondary" (click)="cambiarPagina(5)">Siguiente</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-info text-center" *ngIf="cargando">
+                    <h4 class="alert-heading">Cargando</h4>
+                    <i class="fa fa-spin fa-refresh fa-2x"></i>
+                    <p class="mb-0">Por fabor espere</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

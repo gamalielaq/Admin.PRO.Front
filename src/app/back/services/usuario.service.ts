@@ -1,9 +1,11 @@
+import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ListUsurio } from '../interfaces/cargar-usuarios.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { Usuario } from '../models/usuario.model';
@@ -36,9 +38,13 @@ export class UsuarioService {
     return this.usuario.id || '';
   }
 
+  get headers() {
+    return { headers: { 'token': this.token } }
+  }
+
 
   googleInit() {
-    return new Promise(( resolve ) => {
+    return new Promise((resolve) => {
       gapi.load('auth2', () => {
         this.auth2 = gapi.auth2.init({
           client_id: '937976820929-h5gnhldvqfvc3bqdr0b8p2afi2top93o.apps.googleusercontent.com',
@@ -65,7 +71,7 @@ export class UsuarioService {
     return this.http.get(`${baseUrl}/login/renew`, { headers: { 'token': token } }).pipe(
       map((resp: any) => {
 
-        const {nombre, email, img = '', google, rol, id } =  resp.usuario;
+        const { nombre, email, img = '', google, rol, id } = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, rol, id);
 
         localStorage.setItem('token', resp.token); // nueva version del token
@@ -85,12 +91,22 @@ export class UsuarioService {
     )
   }
 
-  updatePerfil( data: { email:string, nombre: string, role: string }) {
+  deleteUsuario( usuario: Usuario) {
+
+    return this.http.delete(`${baseUrl}/usuarios/${usuario.id}`, this.headers );
+
+  }
+
+  updatePerfil(data: { email: string, nombre: string, role: string }) {
     data = {
       ...data,
-      role: this.usuario.role
+      role: this.usuario.rol
     };
-    return this.http.put(`${baseUrl}/usuarios/${this.uid}`, data , { headers: { 'token': this.token } });
+    return this.http.put(`${baseUrl}/usuarios/${this.uid}`, data, this.headers );
+  }
+
+  cambiarUsuario( usuario: Usuario ) {
+    return this.http.put(`${baseUrl}/usuarios/${usuario.id}`, usuario , this.headers );
   }
 
   login(formData: LoginForm) {
@@ -107,6 +123,21 @@ export class UsuarioService {
         localStorage.setItem('token', resp.token);
       })
     )
+  }
+
+  cargarUsurios(desde: number = 0,) {
+    return this.http.get<ListUsurio>(`${baseUrl}/usuarios?desde=${desde}`, this.headers).pipe(
+      delay(500),
+      map(resp => {
+
+        const usuarios = resp.usuario.map(user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.rol, user.id));
+
+        return {
+          total: resp.total,
+          usuarios
+        };
+      })
+    );
   }
 }
 

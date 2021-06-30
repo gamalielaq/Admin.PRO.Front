@@ -11,7 +11,7 @@ import { UsuarioService } from 'src/app/back/services/usuario.service';
 export class SidebarComponent implements OnInit {
   public usuario: Usuario;
   menuItems: any;
-  public imgUrl = '';
+  public imgUrl = ''; 
   
   constructor(
     private _sideService: SidebarService,
