@@ -14,6 +14,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
+import { MedicoComponent } from './mantenimientos/medico/medico.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.comp
     PerfilComponent,
     UsuariosComponent,
     HospitalesComponent,
+    MedicosComponent,
+    MedicoComponent,
   ],
   imports: [ 
     FormsModule,
