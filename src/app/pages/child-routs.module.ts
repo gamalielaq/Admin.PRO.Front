@@ -40,7 +40,7 @@ const childRouts: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forRoot(childRouts)
+    RouterModule.forChild(childRouts)
   ],
   exports: [RouterModule]
 })
