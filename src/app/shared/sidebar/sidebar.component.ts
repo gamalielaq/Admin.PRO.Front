@@ -17,12 +17,13 @@ export class SidebarComponent implements OnInit {
     private _sideService: SidebarService,
     private _usuarioService: UsuarioService
   ) { 
-    this.menuItems = _sideService.menu;
+    _sideService.listMenu();
     this.imgUrl = _usuarioService.usuario.imagenUrl
     this.usuario = _usuarioService.usuario;
   }
 
   ngOnInit(): void {
+    this.menuItems = this._sideService.menu;
   }
 
 }

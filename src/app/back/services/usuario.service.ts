@@ -41,6 +41,9 @@ export class UsuarioService {
   get headers() {
     return { headers: { 'token': this.token } }
   }
+  get rol(): 'ADMIN-ROL'  | 'USER_ROL'{
+    return this.usuario.rol;
+  }
 
 
   googleInit() {
@@ -57,6 +60,7 @@ export class UsuarioService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
     this.auth2.signOut().then(() => {
       this._ngZone.run(() => {
         this._router.navigateByUrl('/login');
@@ -74,7 +78,7 @@ export class UsuarioService {
         const { nombre, email, img = '', google, rol, id } = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, rol, id);
 
-        localStorage.setItem('token', resp.token); // nueva version del token
+        this.setLocalStorage( resp );
 
         return true;
       }),
@@ -86,7 +90,7 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${baseUrl}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.setLocalStorage( resp );
       })
     )
   }
@@ -112,7 +116,7 @@ export class UsuarioService {
   login(formData: LoginForm) {
     return this.http.post(`${baseUrl}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.setLocalStorage( resp );
       })
     )
   }
@@ -120,7 +124,7 @@ export class UsuarioService {
   loginGoogle(token) {
     return this.http.post(`${baseUrl}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.setLocalStorage( resp );
       })
     )
   }
@@ -138,6 +142,11 @@ export class UsuarioService {
         };
       })
     );
+  }
+
+  setLocalStorage( value ) {
+    localStorage.setItem('token', value.token);
+    localStorage.setItem('menu', JSON.stringify(value.menu));
   }
 }
 

@@ -6,6 +6,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { SharedPipesModule } from './pipes/shared-pipes.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SharedPipesModule } from './pipes/shared-pipes.module';
   imports: [
     CommonModule,
     RouterModule,
-    SharedPipesModule
+    SharedPipesModule,
+    FormsModule
   ],
   exports: [
     BreadcrumbsComponent,

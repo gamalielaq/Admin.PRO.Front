@@ -49,4 +49,10 @@ export class BusquedaService {
       })
     );
   }
+
+  busquedaGlobal( termino: string ) {
+    return this.http.get<any[]>(`${baseUrl}/todo/${termino}`, this.headers );
+  }
+
+
 }

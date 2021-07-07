@@ -16,6 +16,7 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
 import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { MedicoComponent } from './mantenimientos/medico/medico.component';
+import { BusquedasComponent } from './busquedas/busquedas.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MedicoComponent } from './mantenimientos/medico/medico.component';
     HospitalesComponent,
     MedicosComponent,
     MedicoComponent,
+    BusquedasComponent,
   ],
   imports: [ 
     FormsModule,
