@@ -41,7 +41,7 @@ export class UsuarioService {
   get headers() {
     return { headers: { 'token': this.token } }
   }
-  get rol(): 'ADMIN-ROL'  | 'USER_ROL'{
+  get rol(): 'ADMIN-ROL' | 'USER_ROL' {
     return this.usuario.rol;
   }
 
@@ -78,7 +78,7 @@ export class UsuarioService {
         const { nombre, email, img = '', google, rol, id } = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, rol, id);
 
-        this.setLocalStorage( resp );
+        this.setLocalStorage(resp);
 
         return true;
       }),
@@ -90,14 +90,14 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${baseUrl}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        this.setLocalStorage( resp );
+        this.setLocalStorage(resp);
       })
     )
   }
 
-  deleteUsuario( usuario: Usuario) {
+  deleteUsuario(usuario: Usuario) {
 
-    return this.http.delete(`${baseUrl}/usuarios/${usuario.id}`, this.headers );
+    return this.http.delete(`${baseUrl}/usuarios/${usuario.id}`, this.headers);
 
   }
 
@@ -106,17 +106,17 @@ export class UsuarioService {
       ...data,
       role: this.usuario.rol
     };
-    return this.http.put(`${baseUrl}/usuarios/${this.uid}`, data, this.headers );
+    return this.http.put(`${baseUrl}/usuarios/${this.uid}`, data, this.headers);
   }
 
-  cambiarUsuario( usuario: Usuario ) {
-    return this.http.put(`${baseUrl}/usuarios/${usuario.id}`, usuario , this.headers );
+  cambiarUsuario(usuario: Usuario) {
+    return this.http.put(`${baseUrl}/usuarios/${usuario.id}`, usuario, this.headers);
   }
 
   login(formData: LoginForm) {
     return this.http.post(`${baseUrl}/login`, formData).pipe(
       tap((resp: any) => {
-        this.setLocalStorage( resp );
+        this.setLocalStorage(resp);
       })
     )
   }
@@ -124,7 +124,7 @@ export class UsuarioService {
   loginGoogle(token) {
     return this.http.post(`${baseUrl}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        this.setLocalStorage( resp );
+        this.setLocalStorage(resp);
       })
     )
   }
@@ -144,7 +144,7 @@ export class UsuarioService {
     );
   }
 
-  setLocalStorage( value ) {
+  setLocalStorage(value) {
     localStorage.setItem('token', value.token);
     localStorage.setItem('menu', JSON.stringify(value.menu));
   }
